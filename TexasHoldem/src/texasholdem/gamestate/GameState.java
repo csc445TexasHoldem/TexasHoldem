@@ -1,11 +1,12 @@
 package texasholdem.gamestate;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Current complete state of the game.
  */
-public class GameState {
+public class GameState implements Serializable {
     private ArrayList<Player> players;
     private int currentBet;
     private int currentPlayer;
