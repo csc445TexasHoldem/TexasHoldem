@@ -6,11 +6,6 @@ package texasholdem;
 public interface TexasHoldemConstants {
 
     /**
-     * Server's url
-     */
-    String SERVER_URL = "pi.oswego.edu";
-
-    /**
      * Port number
      */
     int PORT = 2714;
@@ -24,4 +19,9 @@ public interface TexasHoldemConstants {
      * Maximum size of a packet sent by any node
      */
     int MAX_PACKET_SIZE = 1500;
+
+    /**
+     * Interval for sending heartbeats to server
+     */
+    int HEARTBEAT_INTERVAL = 1000;
 }

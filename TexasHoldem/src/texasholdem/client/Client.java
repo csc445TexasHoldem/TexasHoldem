@@ -1,16 +1,22 @@
 package texasholdem.client;
 
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
+import texasholdem.Heartbeat;
+import texasholdem.SharedUtilities;
 import texasholdem.TexasHoldemConstants;
 import texasholdem.gamestate.GameState;
+import texasholdem.gamestate.Player;
 
 import java.io.IOException;
+import java.net.DatagramPacket;
 import java.net.InetAddress;
-import java.net.InetSocketAddress;
 import java.net.MulticastSocket;
-import java.net.UnknownHostException;
 
 /**
- * Client
+ * Client. For now, I've included both a separate thread to periodically send
+ * a heartbeat to the server and a listener which responds to the server's
+ * heartbeat packets with a heartbeat of its own, since I'm not sure which
+ * approach we should end up with.
  */
 public class Client implements TexasHoldemConstants {
     /**
@@ -34,6 +40,16 @@ public class Client implements TexasHoldemConstants {
     private GameState gameState;
 
     /**
+     * The Player object representing this client's player
+     */
+    private Player player;
+
+    /**
+     * Spearate thread to periodically send a heartbeat to the server
+     */
+    private HeartbeatSender sender;
+
+    /**
      * Constructs a client in the Texas Hold 'em game.
      */
     public Client() {
@@ -41,6 +57,8 @@ public class Client implements TexasHoldemConstants {
             address = InetAddress.getByName(MULTICAST_ADDRESS);
             mSocket = new MulticastSocket(PORT);
             mSocket.joinGroup(address);
+            player = new Player(mSocket.getNetworkInterface()
+                    .getHardwareAddress());
         }
         catch(IOException ioe) {
             ioe.printStackTrace();
@@ -49,6 +67,9 @@ public class Client implements TexasHoldemConstants {
 
         listener = new ClientListener(this, mSocket);
         listener.start();
+
+        sender = new HeartbeatSender(id(), address, mSocket);
+        sender.start();
     }
 
     /**
@@ -60,8 +81,29 @@ public class Client implements TexasHoldemConstants {
         if(obj == null) {
             throw new NullPointerException("Null received.");
         }
-        if(obj instanceof GameState) {
-
+        else if(obj instanceof GameState) {
+            // Do stuff
         }
+        else if(obj instanceof Heartbeat) {
+            // Reply with a new heartbeat
+            Heartbeat hb = new Heartbeat(id());
+            try {
+                byte[] hbBytes = SharedUtilities.toByteArray(hb);
+                DatagramPacket packet = new DatagramPacket(hbBytes,
+                        hbBytes.length, address, PORT);
+                mSocket.send(packet);
+            }
+            catch(IOException ioe) {
+                ioe.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * Returns the player's unique id.
+     * @return The player's id
+     */
+    public byte[] id() {
+        return player.id();
     }
 }

@@ -12,7 +12,7 @@ import java.net.SocketTimeoutException;
 /**
  * Listens for incoming datagrams and forwards them to the client.
  */
-public class ClientListener extends Thread implements TexasHoldemConstants{
+public class ClientListener extends Thread implements TexasHoldemConstants {
 
     /**
      * The multicast socket to listen on
@@ -41,28 +41,20 @@ public class ClientListener extends Thread implements TexasHoldemConstants{
     public void run() {
         DatagramPacket packet = new DatagramPacket(new byte[MAX_PACKET_SIZE],
                 MAX_PACKET_SIZE);
-        Object obj = null;
         while(true) {
             try {
                 mSocket.receive(packet);
+                client.receiveObject(SharedUtilities.toObject(packet.getData()));
             }
             catch(SocketTimeoutException ste) {
                 // Socket has timed out, indicating disconnection from server
                 // How is this handled?
                 ste.printStackTrace();
             }
-            catch(IOException ioe) {
-                ioe.printStackTrace();
-                System.exit(1);
-            }
-            try {
-                obj = SharedUtilities.toObject(packet.getData());
-            }
             catch(IOException | ClassNotFoundException ioecnfe) {
                 ioecnfe.printStackTrace();
+                System.exit(1);
             }
-            client.receiveObject(obj);
-
         }
     }
 }
