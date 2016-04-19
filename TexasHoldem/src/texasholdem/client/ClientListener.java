@@ -2,7 +2,6 @@ package texasholdem.client;
 
 import texasholdem.SharedUtilities;
 import texasholdem.TexasHoldemConstants;
-import texasholdem.gamestate.GameState;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -12,7 +11,7 @@ import java.net.SocketTimeoutException;
 /**
  * Listens for incoming datagrams and forwards them to the client.
  */
-public class ClientListener extends Thread implements TexasHoldemConstants {
+class ClientListener extends Thread implements TexasHoldemConstants {
 
     /**
      * The multicast socket to listen on

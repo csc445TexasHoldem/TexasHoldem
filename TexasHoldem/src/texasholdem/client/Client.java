@@ -1,6 +1,5 @@
 package texasholdem.client;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import texasholdem.Heartbeat;
 import texasholdem.SharedUtilities;
 import texasholdem.TexasHoldemConstants;
@@ -27,7 +26,12 @@ public class Client implements TexasHoldemConstants {
     /**
      * Multicast address
      */
-    private InetAddress address;
+    private InetAddress multiAddress;
+
+    /**
+     * Server's address
+     */
+    private InetAddress serverAddress;
 
     /**
      * Multicast socket
@@ -54,9 +58,10 @@ public class Client implements TexasHoldemConstants {
      */
     public Client() {
         try {
-            address = InetAddress.getByName(MULTICAST_ADDRESS);
+            multiAddress = InetAddress.getByName(MULTICAST_ADDRESS);
+            serverAddress = InetAddress.getByName(SERVER_ADDRESS);
             mSocket = new MulticastSocket(PORT);
-            mSocket.joinGroup(address);
+            mSocket.joinGroup(multiAddress);
             player = new Player(mSocket.getNetworkInterface()
                     .getHardwareAddress());
         }
@@ -68,7 +73,7 @@ public class Client implements TexasHoldemConstants {
         listener = new ClientListener(this, mSocket);
         listener.start();
 
-        sender = new HeartbeatSender(id(), address, mSocket);
+        sender = new HeartbeatSender(id(), serverAddress, mSocket);
         sender.start();
     }
 
@@ -90,7 +95,7 @@ public class Client implements TexasHoldemConstants {
             try {
                 byte[] hbBytes = SharedUtilities.toByteArray(hb);
                 DatagramPacket packet = new DatagramPacket(hbBytes,
-                        hbBytes.length, address, PORT);
+                        hbBytes.length, serverAddress, PORT);
                 mSocket.send(packet);
             }
             catch(IOException ioe) {
