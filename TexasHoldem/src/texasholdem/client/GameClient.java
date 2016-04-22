@@ -12,10 +12,9 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 
 /**
- * GameClient. For now, I've included both a separate thread to periodically send
- * a heartbeat to the server and a listener which responds to the server's
- * heartbeat packets with a heartbeat of its own, since I'm not sure which
- * approach we should end up with.
+ * GameClient. Includes a separate listener thread to receive incoming
+ * packets and forward them to this class, and a separate heartbeat thread to
+ * periodically send a heartbeat to the server.
  */
 public class GameClient implements TexasHoldemConstants {
     /**
@@ -91,9 +90,9 @@ public class GameClient implements TexasHoldemConstants {
         }
         else if(obj instanceof Heartbeat) {
             // Reply with a new heartbeat
-            Heartbeat hb = new Heartbeat(id());
             try {
-                byte[] hbBytes = SharedUtilities.toByteArray(hb);
+                byte[] hbBytes =
+                        SharedUtilities.toByteArray(new Heartbeat(id()));
                 DatagramPacket packet = new DatagramPacket(hbBytes,
                         hbBytes.length, serverAddress, PORT);
                 mSocket.send(packet);

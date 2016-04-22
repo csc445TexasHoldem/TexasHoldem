@@ -1,5 +1,7 @@
 package texasholdem.client;
 
+import texasholdem.Heartbeat;
+import texasholdem.SharedUtilities;
 import texasholdem.TexasHoldemConstants;
 
 import java.io.IOException;
@@ -50,11 +52,18 @@ class HeartbeatSender extends Thread implements TexasHoldemConstants{
      */
     @Override
     public void run() {
+        DatagramPacket hbPacket = null;
+        try {
+            byte[] hbBytes = SharedUtilities.toByteArray(new Heartbeat(id));
+            hbPacket = new DatagramPacket(hbBytes, hbBytes.length, address,
+                    PORT);
+        }
+        catch(IOException ioe) {
+            ioe.printStackTrace();
+        }
         while(!cancel) {
-            DatagramPacket packet = new DatagramPacket(id, id.length,
-                    address, PORT);
             try {
-                socket.send(packet);
+                socket.send(hbPacket);
                 Thread.sleep(HEARTBEAT_INTERVAL);
             }
             catch(IOException | InterruptedException ioeie) {
@@ -66,7 +75,7 @@ class HeartbeatSender extends Thread implements TexasHoldemConstants{
     /**
      * Cancels the listener, causing the {@link #run()} method to stop.
      */
-    public void cancel() {
+    void cancel() {
         cancel = true;
     }
 }

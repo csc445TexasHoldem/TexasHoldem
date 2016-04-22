@@ -1,3 +1,4 @@
+package texasholdem.server;
 
 import java.io.*;
 import java.net.*;
@@ -38,7 +39,7 @@ public class GameServer implements Serializable {
                         if (new String(rec.getData()).equals("start")) {
                             gameStart = true;
                         } else {
-                            /* 
+                            /*
                            players[0] is sending a heartbeat
                              */
                         }
@@ -49,7 +50,7 @@ public class GameServer implements Serializable {
                                 break;
                             } else {
                                 /*
-                                players[i] is sending a heartbeat 
+                                players[i] is sending a heartbeat
                                  */
                             }
                         }
@@ -58,7 +59,7 @@ public class GameServer implements Serializable {
                 while (!gameEnd) {
                     /* Execute game */
                     /* deal hands and take bets */
-                    /* receive input from clients, wait for player 'up' to take 
+                    /* receive input from clients, wait for player 'up' to take
                     turn */
                     /* update all clients about what occured from player's turn */
                     /* progress the game */

@@ -66,7 +66,7 @@ class ClientListener extends Thread implements TexasHoldemConstants {
     /**
      * Cancels the listener, causing the {@link #run()} method to stop.
      */
-    public void cancel() {
+    void cancel() {
         cancel = true;
     }
 }
