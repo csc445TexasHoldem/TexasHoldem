@@ -12,12 +12,12 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 
 /**
- * Client. For now, I've included both a separate thread to periodically send
+ * GameClient. For now, I've included both a separate thread to periodically send
  * a heartbeat to the server and a listener which responds to the server's
  * heartbeat packets with a heartbeat of its own, since I'm not sure which
  * approach we should end up with.
  */
-public class Client implements TexasHoldemConstants {
+public class GameClient implements TexasHoldemConstants {
     /**
      * Separate thread to listen for incoming packets
      */
@@ -56,7 +56,7 @@ public class Client implements TexasHoldemConstants {
     /**
      * Constructs a client in the Texas Hold 'em game.
      */
-    public Client() {
+    public GameClient() {
         try {
             multiAddress = InetAddress.getByName(MULTICAST_ADDRESS);
             serverAddress = InetAddress.getByName(SERVER_ADDRESS);

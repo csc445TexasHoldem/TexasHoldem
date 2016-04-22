@@ -21,7 +21,7 @@ class ClientListener extends Thread implements TexasHoldemConstants {
     /**
      * The associated client
      */
-    private Client client;
+    private GameClient client;
 
     /**
      * true if the listener has been canceled
@@ -33,7 +33,7 @@ class ClientListener extends Thread implements TexasHoldemConstants {
      * @param client The associated client
      * @param mSocket The multicast socket to listen on
      */
-    ClientListener(Client client, MulticastSocket mSocket) {
+    ClientListener(GameClient client, MulticastSocket mSocket) {
         this.mSocket = mSocket;
         this.client = client;
         cancel = false;
