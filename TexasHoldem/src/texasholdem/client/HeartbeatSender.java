@@ -28,6 +28,11 @@ class HeartbeatSender extends Thread implements TexasHoldemConstants{
     private final  MulticastSocket socket;
 
     /**
+     * true if the sender has been canceled
+     */
+    private volatile boolean cancel;
+
+    /**
      * Constructs a new heartbeat sender.
      * @param id The client's id
      * @param address The destination address
@@ -37,6 +42,7 @@ class HeartbeatSender extends Thread implements TexasHoldemConstants{
         this.id = id;
         this.address = address;
         this.socket = socket;
+        cancel = false;
     }
 
     /**
@@ -44,7 +50,7 @@ class HeartbeatSender extends Thread implements TexasHoldemConstants{
      */
     @Override
     public void run() {
-        while(true) {
+        while(!cancel) {
             DatagramPacket packet = new DatagramPacket(id, id.length,
                     address, PORT);
             try {
@@ -55,5 +61,12 @@ class HeartbeatSender extends Thread implements TexasHoldemConstants{
                 ioeie.printStackTrace();
             }
         }
+    }
+
+    /**
+     * Cancels the listener, causing the {@link #run()} method to stop.
+     */
+    public void cancel() {
+        cancel = true;
     }
 }

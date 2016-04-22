@@ -13,7 +13,7 @@ public interface TexasHoldemConstants {
     /**
      * Multicast address used by the clients and server
      */
-    String MULTICAST_ADDRESS = "";
+    String MULTICAST_ADDRESS = "225.145.14.36";
 
     /**
      * Notes:   First byte of an IPv6 multicast address is all 1s.

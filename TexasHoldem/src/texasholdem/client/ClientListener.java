@@ -24,6 +24,11 @@ class ClientListener extends Thread implements TexasHoldemConstants {
     private Client client;
 
     /**
+     * true if the listener has been canceled
+     */
+    private volatile boolean cancel;
+
+    /**
      * Constructs a new client listener.
      * @param client The associated client
      * @param mSocket The multicast socket to listen on
@@ -31,6 +36,7 @@ class ClientListener extends Thread implements TexasHoldemConstants {
     ClientListener(Client client, MulticastSocket mSocket) {
         this.mSocket = mSocket;
         this.client = client;
+        cancel = false;
     }
 
     /**
@@ -40,7 +46,7 @@ class ClientListener extends Thread implements TexasHoldemConstants {
     public void run() {
         DatagramPacket packet = new DatagramPacket(new byte[MAX_PACKET_SIZE],
                 MAX_PACKET_SIZE);
-        while(true) {
+        while(!cancel) {
             try {
                 mSocket.receive(packet);
                 client.receiveObject(SharedUtilities.toObject(packet.getData()));
@@ -55,5 +61,12 @@ class ClientListener extends Thread implements TexasHoldemConstants {
                 System.exit(1);
             }
         }
+    }
+
+    /**
+     * Cancels the listener, causing the {@link #run()} method to stop.
+     */
+    public void cancel() {
+        cancel = true;
     }
 }

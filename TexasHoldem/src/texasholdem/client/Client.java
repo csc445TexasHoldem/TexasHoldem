@@ -111,4 +111,12 @@ public class Client implements TexasHoldemConstants {
     public byte[] id() {
         return player.id();
     }
+
+    /**
+     * Cancels the client, shutting down the heartbeat and the packet listener.
+     */
+    public void cancel() {
+        listener.cancel();
+        sender.cancel();
+    }
 }
