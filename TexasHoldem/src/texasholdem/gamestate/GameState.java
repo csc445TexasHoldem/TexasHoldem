@@ -33,4 +33,9 @@ public class GameState implements Serializable {
         players.add(player);
         return true;
     }
+    
+    public String action(byte[] acting) {
+       
+       return "placeholder";
+    }
 }

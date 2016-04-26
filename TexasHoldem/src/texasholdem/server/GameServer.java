@@ -7,7 +7,7 @@ import texasholdem.SharedUtilities;
 
 public class GameServer implements TexasHoldemConstants {
    public static void main(String[] args) {
-      DatagramSocket socket;
+      MulticastSocket socket;
       Object request;
       byte[] recPacket = new byte[MAX_PACKET_SIZE];
       byte[] sendPacket;
@@ -16,7 +16,7 @@ public class GameServer implements TexasHoldemConstants {
       String instructions = "Send your MAC address";
       while (true) {
          try {
-            socket = new DatagramSocket(PORT);
+            socket = new MulticastSocket(PORT);
             while (true) {
                socket.receive(packet);
                request = SharedUtilities.toObject(packet.getData());
@@ -27,6 +27,7 @@ public class GameServer implements TexasHoldemConstants {
                                               address, PORT);
                   socket.send(packet);
                   new GameServerThread(socket).start();
+                  new MultiHeartbeatSender(address, socket).start();
                }
                socket.close();
             }
