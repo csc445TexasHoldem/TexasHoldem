@@ -18,6 +18,15 @@ public class Heartbeat implements Serializable {
         this.sender = sender;
         this.seqno = counter.getAndIncrement();
     }
+    
+    /*
+     * Constructor for the server's multicast heartbeat
+     * to request heartbeats from clients
+     */
+    public Heartbeat() {
+        sender = null;
+        this.seqno = counter.getAndIncrement();
+    }
 
     public byte[] getSender() {
         return sender;
