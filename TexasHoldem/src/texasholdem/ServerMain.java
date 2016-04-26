@@ -7,7 +7,7 @@ import texasholdem.server.GameServer;
  */
 public class ServerMain {
 
-    public static void main(String[] args) {
-        new GameServer();
-    }
+   public static void main(String[] args) {
+      new GameServer();
+   }
 }

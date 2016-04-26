@@ -7,7 +7,7 @@ import texasholdem.client.GameClient;
  */
 public class ClientMain {
 
-    public static void main(String[] args) {
-        new GameClient();
-    }
+   public static void main(String[] args) {
+      new GameClient();
+   }
 }
