@@ -9,7 +9,6 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.SocketTimeoutException;
-import java.net.UnknownHostException;
 
 /**
  * Listens for incoming datagrams and forwards them to the client.
@@ -74,9 +73,7 @@ class ClientListener extends Thread implements TexasHoldemConstants {
             }
          }
          catch(SocketTimeoutException ste) {
-            // Socket has timed out, indicating disconnection from server
-            // How is this handled?
-            ste.printStackTrace();
+            disconnected();
          }
          catch(IOException | ClassNotFoundException ioecnfe) {
             ioecnfe.printStackTrace();
@@ -90,5 +87,14 @@ class ClientListener extends Thread implements TexasHoldemConstants {
     */
    void cancel() {
       cancel = true;
+   }
+
+   /**
+    * Invoked when the listener detects that it has been disconnected from
+    * the server.
+    */
+   private void disconnected() {
+      client.cancel();
+      System.out.println("Disconnected from server.");
    }
 }
