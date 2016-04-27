@@ -6,6 +6,12 @@ import texasholdem.TexasHoldemConstants;
 import texasholdem.SharedUtilities;
 
 public class GameServer implements TexasHoldemConstants {
+
+   /**
+    * The server's id
+    */
+   private byte[] id;
+
    public static void main(String[] args) {
       MulticastSocket socket;
       Object request;
@@ -23,7 +29,7 @@ public class GameServer implements TexasHoldemConstants {
                address = packet.getAddress();
                sendPacket = SharedUtilities.toByteArray(instructions);
                if (request == "sick indicator to start game") {
-                  packet = new DatagramPacket(sendPacket, sendPacket.length, 
+                  packet = new DatagramPacket(sendPacket, sendPacket.length,
                                               address, PORT);
                   socket.send(packet);
                   new GameServerThread(socket).start();
