@@ -64,7 +64,7 @@ class ClientListener extends Thread implements TexasHoldemConstants {
             if(obj instanceof Heartbeat) {
                // Send heartbeat to server
                byte[] hbBytes =
-                     SharedUtilities.toByteArray(new Heartbeat(client.id()));
+                     SharedUtilities.toByteArray(new Heartbeat(client.getId()));
                socket.send(new DatagramPacket(hbBytes, hbBytes.length,
                      server, PORT));
             }
@@ -97,4 +97,5 @@ class ClientListener extends Thread implements TexasHoldemConstants {
       client.cancel();
       System.out.println("Disconnected from server.");
    }
+}
 }
