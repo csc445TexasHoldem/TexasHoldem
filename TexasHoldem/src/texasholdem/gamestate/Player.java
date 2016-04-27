@@ -10,21 +10,42 @@ public class Player implements Serializable {
    /**
     * The player's id
     */
-   private final byte[] id;
+   private byte[] id;
 
    /**
-    * Constructs a new player with the specified id.
-    * @param id The player's id
+    * The player's username
     */
-   public Player(byte[] id) {
-      this.id = id;
-   }
+   private String name;
 
    /**
     * Returns the player's unique id.
     * @return The player's id
     */
-   public byte[] id() {
+   public byte[] getId() {
       return id;
+   }
+
+   /**
+    * Sets the player's id.
+    * @param id The new id
+    */
+   public void setId(byte[] id) {
+      this.id = id;
+   }
+
+   /**
+    * Returns the player's username.
+    * @return The player's name
+    */
+   public String getName() {
+      return name;
+   }
+
+   /**
+    * Sets the player's name.
+    * @param name The player's new name
+    */
+   public void setName(String name) {
+      this.name = name;
    }
 }
