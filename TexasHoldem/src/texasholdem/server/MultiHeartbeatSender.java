@@ -14,21 +14,28 @@ implements TexasHoldemConstants {
     /**
      * Address to which heartbeats are sent
      */
-    private final InetAddress address;
+    private InetAddress address;
 
     /**
      * Socket on which heartbeats are sent
      */
     private final  MulticastSocket socket;
-
+    
+    private final Heartbeat hbReq;
     /**
      * Constructs server multicast heartbeat sender.
      * @param address The multicast group address
      * @param socket The socket over which to send the heartbeat
      */
-    MultiHeartbeatSender(InetAddress address, MulticastSocket socket) {
-        this.address = address;
+    MultiHeartbeatSender(MulticastSocket socket) {
         this.socket = socket;
+        try{
+           this.address = InetAddress.getByAddress(TexasHoldemConstants.SERVER_ADDRESS.getBytes());
+        } catch (IOException ioe){
+           
+           ioe.printStackTrace();
+        }
+        hbReq = new Heartbeat(address.getAddress());
     }
 
     /**
@@ -38,7 +45,7 @@ implements TexasHoldemConstants {
     public void run() {
         DatagramPacket hbPacket = null;
         try {
-            byte[] hbBytes = SharedUtilities.toByteArray(new Heartbeat());
+            byte[] hbBytes = SharedUtilities.toByteArray(hbReq);
             hbPacket = new DatagramPacket(hbBytes, hbBytes.length, address,
                     PORT);
         }
