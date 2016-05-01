@@ -4,10 +4,20 @@ import java.io.*;
 import java.net.*;
 import texasholdem.TexasHoldemConstants;
 import texasholdem.SharedUtilities;
+import texasholdem.gamestate.Player;
 
-public class GameServer implements TexasHoldemConstants {
-   public static void main(String[] args) {
-      MulticastSocket socket;
+public class GameServer extends Thread implements TexasHoldemConstants {
+   MulticastSocket socket;
+   Player captain;
+   MultiHeartbeatSender MHbS;
+   
+   public GameServer(MulticastSocket mSock, byte[] id) {
+      this.socket = mSock;
+      this.captain = new Player(id);
+   }
+   
+   @Override
+   public void run() {
       Object request;
       byte[] recPacket = new byte[MAX_PACKET_SIZE];
       byte[] sendPacket;
@@ -27,7 +37,7 @@ public class GameServer implements TexasHoldemConstants {
                                               address, PORT);
                   socket.send(packet);
                   new GameServerThread(socket).start();
-                  new MultiHeartbeatSender(address, socket).start();
+                  new MultiHeartbeatSender(socket).start();
                }
                socket.close();
             }
