@@ -5,7 +5,7 @@ import texasholdem.TexasHoldemConstants;
 import texasholdem.Heartbeat;
 import java.net.*;
 import java.io.*;
-import texasholdem.gamestate.Player;
+import java.util.ArrayList;
 
 /*
  * Not sure how we want to store all of the players' id. Either in 
@@ -15,18 +15,20 @@ import texasholdem.gamestate.Player;
 
 public class HeartbeatListener extends Thread implements TexasHoldemConstants {
    private int counter = 0;
-   private final byte[] id;
-   private final InetAddress address;
+   private ArrayList<Heartbeat> heartbeats = new ArrayList<>();;
+         byte[] id;
    private final MulticastSocket mSocket;
    private volatile boolean dead;
    
-   HeartbeatListener(Player player /*could be just input id rather than the
-         entire player object*/, MulticastSocket sock, InetAddress addr) {
-      address = addr;
-      mSocket = sock;
-      id = player.id();
+   HeartbeatListener(byte[] id, MulticastSocket socket) {
+      this.mSocket = socket;
+      heartbeats.add(new Heartbeat(id));
    }
    
+   public void addHeartbeat(byte[] id) {
+      heartbeats.add(new Heartbeat(id));
+   }
+   /* This part needs to be modified to fit ScheduledThreadPoolExecutor */
    @Override
    public void run() {
       DatagramPacket packet = new DatagramPacket(new byte[MAX_PACKET_SIZE],
@@ -51,4 +53,5 @@ public class HeartbeatListener extends Thread implements TexasHoldemConstants {
          }
       }
    }
+   /* This part needs to be modified to fit ScheduledThreadPoolExecutor */
 }
