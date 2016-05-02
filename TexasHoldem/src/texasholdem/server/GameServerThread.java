@@ -5,7 +5,6 @@ import java.net.*;
 
 import texasholdem.TexasHoldemConstants;
 import texasholdem.SharedUtilities;
-import texasholdem.Heartbeat;
 import texasholdem.gamestate.GameState;
 import texasholdem.gamestate.Player;
 
@@ -24,6 +23,7 @@ public class GameServerThread extends Thread implements TexasHoldemConstants{
       socket = sock;
    }
 
+   @Override
    public void run() {
       GameState game = new GameState();
       Player player;

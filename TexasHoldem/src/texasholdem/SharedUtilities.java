@@ -12,31 +12,31 @@ import java.io.Serializable;
  */
 public class SharedUtilities {
 
-    /**
-     * Converts a serializable object to a byte array.
-     * @param ser The object to be serialized
-     * @return The serialized object, as a byte array
-     * @throws IOException If an I/O error occurs
-     */
-    public static byte[] toByteArray(Serializable ser) throws IOException {
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        ObjectOutputStream oos = new ObjectOutputStream(bos);
-        oos.writeObject(ser);
-        return bos.toByteArray();
-    }
+   /**
+    * Converts a serializable object to a byte array.
+    * @param ser The object to be serialized
+    * @return The serialized object, as a byte array
+    * @throws IOException If an I/O error occurs
+    */
+   public static byte[] toByteArray(Serializable ser) throws IOException {
+      ByteArrayOutputStream bos = new ByteArrayOutputStream();
+      ObjectOutputStream oos = new ObjectOutputStream(bos);
+      oos.writeObject(ser);
+      return bos.toByteArray();
+   }
 
-    /**
-     * Converts a byte array to an object.
-     * @param bytes The byte array
-     * @return The object
-     * @throws IOException If an I/O error occurs
-     * @throws ClassNotFoundException If class of a serialized object cannot be
-     *         found
-     */
-    public static Object toObject(byte[] bytes)
-            throws IOException, ClassNotFoundException {
-        ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
-        ObjectInputStream ois = new ObjectInputStream(bis);
-        return ois.readObject();
-    }
+   /**
+    * Converts a byte array to an object.
+    * @param bytes The byte array
+    * @return The object
+    * @throws IOException If an I/O error occurs
+    * @throws ClassNotFoundException If class of a serialized object cannot be
+    *         found
+    */
+   public static Object toObject(byte[] bytes)
+         throws IOException, ClassNotFoundException {
+      ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+      ObjectInputStream ois = new ObjectInputStream(bis);
+      return ois.readObject();
+   }
 }
