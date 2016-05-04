@@ -39,4 +39,19 @@ public class SharedUtilities {
       ObjectInputStream ois = new ObjectInputStream(bis);
       return ois.readObject();
    }
+   
+   /**
+    * Converts an array of bytes to a long.
+    * @param bytes The array of bytes to be converted
+    * @return The long value
+    */
+   public static long bytesToLong(byte[] bytes) {
+      long mask = 0b11111111L;
+      long value = 0;
+      for(byte b: bytes) {
+         value <<= Byte.SIZE;
+         value |= (b & mask);
+      }
+      return value;
+   }
 }
