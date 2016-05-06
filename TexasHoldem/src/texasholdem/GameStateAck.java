@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Acknowledgement of receipt of the gamestate object by a client. Sent from
  * client to server only.
  */
-public class GameStateAck implements Serializable{
+public class GameStateAck implements Serializable {
 
    /**
     * The sequence number of the gamestate being acknowledged
@@ -28,5 +28,21 @@ public class GameStateAck implements Serializable{
    public GameStateAck(int sequenceNumber, long sender) {
       this.sequenceNumber = sequenceNumber;
       this.sender = sender;
+   }
+
+   /**
+    * Returns the sequence number of the gamestate being acknowledged.
+    * @return The sequence number of the gamestate being acknowledged
+    */
+   public int getSequenceNumber() {
+      return sequenceNumber;
+   }
+
+   /**
+    * Returns the id of the ACK's sender.
+    * @return The id of the ACK's sender
+    */
+   public long getSender() {
+      return sender;
    }
 }
