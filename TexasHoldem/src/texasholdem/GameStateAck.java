@@ -3,10 +3,9 @@ package texasholdem;
 import java.io.Serializable;
 
 /**
- * Acknowledgement of receipt of the gamestate object by a client. Sent from
- * client to server only.
+ * Acknowledgement of receipt of the gamestate object.
  */
-public class GameStateAck implements Serializable {
+public class Ack implements Serializable {
 
    /**
     * The sequence number of the gamestate being acknowledged
@@ -25,7 +24,7 @@ public class GameStateAck implements Serializable {
     *        acknowledged
     * @param sender The id of the player sending the ACK
     */
-   public GameStateAck(int sequenceNumber, long sender) {
+   public Ack(int sequenceNumber, long sender) {
       this.sequenceNumber = sequenceNumber;
       this.sender = sender;
    }
